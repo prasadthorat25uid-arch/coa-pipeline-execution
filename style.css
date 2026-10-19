@@ -1,0 +1,66 @@
+:root{
+  --bg:#f5f6fa; --panel:#ffffff; --ink:#1c2233; --muted:#667085; --line:#dfe3ec;
+  --accent:#3b5bdb; --accent-soft:#e7ecff; --good:#1b8a5a; --good-soft:#dcf5e8;
+  --bad:#c92a2a; --bad-soft:#fde4e4; --warn:#b36b00; --warn-soft:#fff1d6;
+  --purple:#7048e8; --purple-soft:#ece6ff; --teal:#0b7285; --teal-soft:#d9f3f7;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#12151d; --panel:#1b2030; --ink:#e8ebf4; --muted:#9aa3b8; --line:#2b3248;
+    --accent:#748ffc; --accent-soft:#242c52; --good:#51cf8d; --good-soft:#18362a;
+    --bad:#ff8787; --bad-soft:#401d1d; --warn:#fcc419; --warn-soft:#3d3110;
+    --purple:#b197fc; --purple-soft:#2f2552; --teal:#66d9e8; --teal-soft:#10353c;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans)}
+header.top{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 20px}
+header.top .wrap{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between}
+header.top h1{margin:0;font-size:20px;letter-spacing:.2px}
+header.top .sub{color:var(--muted);font-size:13px}
+.team{font-size:12.5px;color:var(--muted);text-align:right;line-height:1.45}
+.team b{color:var(--ink);font-weight:600}
+main{max-width:1280px;margin:0 auto;padding:18px 20px 40px;display:grid;gap:16px}
+.grid2{display:grid;gap:16px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.grid3{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.panel h2{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:650}
+.panel h3{margin:12px 0 6px;font-size:14px}
+.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--muted)}
+.field input,.field select,.field textarea{font:14px var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.field input[type=range]{padding:0;accent-color:var(--accent)}
+.field input[type=number]{width:96px}
+textarea{font-family:var(--mono)!important;font-size:13px!important;width:100%;resize:vertical}
+button{font:600 13.5px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:7px 13px;border-radius:7px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.pill{display:inline-block;padding:1px 9px;border-radius:99px;font-size:12px;font-weight:650}
+.pill.hit,.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.miss,.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.info{background:var(--accent-soft);color:var(--accent)}
+.pill.purple{background:var(--purple-soft);color:var(--purple)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left}
+th{background:var(--bg);font-weight:650;color:var(--muted);font-size:12px}
+td.num,th.num{text-align:right;font-family:var(--mono)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.stat .v{font:650 20px var(--mono)}
+.stat .l{font-size:11.5px;color:var(--muted)}
+.log{max-height:260px;overflow:auto;font:12.5px/1.55 var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.log div{padding:1px 0;border-bottom:1px dashed transparent}
+.log .cur{background:var(--accent-soft);border-radius:4px}
+.note{font-size:12.5px;color:var(--muted)}
+.err{color:var(--bad);font-size:13px;white-space:pre-wrap}
+footer{max-width:1280px;margin:0 auto;padding:0 20px 28px;color:var(--muted);font-size:12px}
+svg text{font-family:var(--sans)}

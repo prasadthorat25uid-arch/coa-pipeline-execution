@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline Execution Simulator</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .pipe{border-collapse:separate;border-spacing:2px;font:12.5px var(--mono);width:auto}
+  .pipe th,.pipe td{border:none;padding:0;text-align:center;min-width:46px;height:26px}
+  .pipe th{background:none;color:var(--muted);font-size:11px}
+  .pipe td.lbl{text-align:left;min-width:190px;padding:0 8px 0 2px;white-space:nowrap;font-family:var(--mono);color:var(--ink)}
+  .pipe th.lbl{text-align:left}
+  .pipe td.cell{border-radius:5px;font-weight:700;color:#fff}
+  .s-IF{background:var(--teal)} .s-ID{background:var(--accent)} .s-EX{background:var(--good)} .s-MEM{background:var(--purple)} .s-WB{background:#c2751a}
+  .pipe td.stall{background:var(--warn-soft)!important;color:var(--warn);outline:1.5px dashed var(--warn)}
+  .pipe td.flush{background:var(--bad-soft);color:var(--bad);font-weight:700}
+  .pipe td.bubble{background:var(--line);color:var(--muted);font-weight:700}
+  .pipe th.now,.pipe td.now-col{box-shadow:inset 0 0 0 2px var(--ink)}
+  .pipe th.now{color:var(--ink);font-weight:700;border-radius:5px}
+  .hidden{display:none!important}
+  .ev{padding:5px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .ev:last-child{border-bottom:none}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;margin-top:8px}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .check{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-size:14px;padding-bottom:6px}
+  .check input{width:16px;height:16px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div>
+    <h1>Pipeline Execution Simulator</h1>
+    <div class="sub">Stages, hazards and stalls &middot; COA CO5 Micro Project &middot; Sanjivani University</div>
+  </div>
+  <div class="team">
+    <b>[Student 1 name]</b> &middot; PRN [add PRN]<br>
+    <b>[Student 2 name]</b> &middot; PRN [add PRN]
+  </div>
+</div></header>
+
+<main>
+  <section class="panel">
+    <h2>Pipeline settings</h2>
+    <div class="controls">
+      <label class="field">Number of stages
+        <select id="stages"><option value="3">3 (IF, ID, EX)</option><option value="4">4 (IF, ID, EX, WB)</option><option value="5" selected>5 (IF, ID, EX, MEM, WB)</option></select>
+      </label>
+      <label class="field">Branch handling
+        <select id="branch"><option value="stall">Stall until branch is resolved</option><option value="predict">Predict not taken (flush if taken)</option></select>
+      </label>
+      <label class="field check"><input type="checkbox" id="fwd"> Data forwarding</label>
+      <label class="field check"><input type="checkbox" id="struct"> Single memory port (structural hazard)</label>
+      <label class="field">Example program
+        <select id="sample"></select>
+      </label>
+    </div>
+    <div class="note" style="margin-top:8px">Everything re-runs as soon as you change a setting. Try the "Data hazard chain" with forwarding off and then on, or the "Load-use hazard" to see the one stall that forwarding cannot remove.</div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Instruction trace</h2>
+      <textarea id="src" rows="10" spellcheck="false"></textarea>
+      <div class="btnrow" style="margin-top:8px"><button class="primary" id="btnRun">Simulate</button></div>
+      <div class="note" style="margin-top:6px">One instruction per line, in the order they execute. Supported: ADD SUB AND OR SLT (3 registers), ADDI R1, R2, 5, LW R1, 0(R2), SW R1, 0(R2), BEQ/BNE R1, R2, T or NT (taken / not taken), NOP. Registers R0 to R31; R0 is always zero. Lines starting with ; or # are comments.</div>
+      <div class="err" id="err"></div>
+    </section>
+    <section class="panel">
+      <h2>Results</h2>
+      <div class="stats" id="stats"></div>
+      <div class="note" id="statNote" style="margin-top:8px"></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Pipeline diagram</h2>
+    <div class="btnrow" style="margin-bottom:10px">
+      <button class="primary" id="btnNext">Next cycle</button>
+      <button id="btnPrev">Previous cycle</button>
+      <button id="btnPlay">Play</button>
+      <button id="btnAll">Show all cycles</button>
+      <button id="btnReset">Restart</button>
+      <span class="pill info" id="cycleNow" style="align-self:center">cycle 0</span>
+    </div>
+    <div style="overflow:auto"><table class="pipe" id="pipe"></table></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>What is in each stage right now</h2>
+      <table id="now"></table>
+    </section>
+    <section class="panel">
+      <h2>Hazards found</h2>
+      <div id="events"></div>
+    </section>
+  </div>
+</main>
+<footer>Department of Integrated B.Tech &middot; Computer Organization and Architecture &middot; CO5 micro project. Assumes the register file is written in the first half of a cycle and read in the second half; branches resolve at the end of EX.</footer>
+<script src="pipeline.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
